@@ -11,6 +11,7 @@ class Server_init {
   constructor(debug: string) {
     this.debug = debug;
   }
+  
   database_init(uri: string) {
     const db_init = new DB_Conection().connect(dburi).finally
   }
