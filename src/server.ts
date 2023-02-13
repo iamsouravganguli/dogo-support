@@ -1,44 +1,27 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import * as dotenv from "dotenv";
-
 dotenv.config();
-import { MongoDBConnection } from "./configs/database/db";
+// import { MongoDBConnection } from "./configs/database/db";
+import { DB_Conection } from "./database/database";
 const serverport = process.env.PORT || 6000;
 const dburi = process.env.DBURI || "mongodb://127.0.0.1:27017/test";
-interface server_info {
-  port: string | number | undefined;
-  server: Application;
-}
-class ServerInit {
-  private data: server_info;
 
-  constructor(data: server_info) {
-    this.data = data;
+class Server_init {
+  private debug: string;
+  constructor(debug: string) {
+    this.debug = debug;
   }
-
-  dbconn(): void {
-    const connection = new MongoDBConnection().Connection(dburi);
+  database_init(uri: string) {
+    const db_init = new DB_Conection().connect(dburi).finally
   }
-
-  higher_middleware_init(): boolean {
-    return true;
-  }
-
-  middleware_init(): boolean {
-    return true;
-  }
-
-  server_on(): void {
-    this.data.server.listen(this.data.port, (): void => {
-      console.log(`Server working on port: ${this.data.port}`);
+  server_start(port: string, express_init: Application): void {
+    express_init.listen(port, () => {
+      this.debug === "true"
+        ? console.log("Server on debug")
+        : console.log("server start");
     });
   }
 }
-
-const callServerInit = new ServerInit({
-  port: serverport,
-  server: express(),
-});
-
-callServerInit.dbconn();
-callServerInit.server_on();
+const servercall = new Server_init("false")
+servercall.database_init(dburi);
+servercall.server_start("4000", express());
